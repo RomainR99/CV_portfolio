@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RomainRoth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: rgb(17, 24, 119);
+      color: white;
+      font-family: Inter, sans-serif;
+      padding-top: 105px; /* Compense le header fixe */
+    }
+
+    main { flex: 1; padding-bottom: 30px; }
+
+    header {
+      font-family: Inter, sans-serif;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 105px;
+      background-color: rgb(17, 23, 96);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 20px;
+      z-index: 99;
+    }
+
+    #logo {
+      font-size: 128px;
+      text-transform: uppercase;
+      color: white;
+      margin: 0;
+    }
+
+    #div2 {
+      display: flex; align-items: center; gap: 20px;
+      color: white; font-size: 32px; margin: 30px;
+    }
+
+    #div2 a { display: inline-block; text-decoration: none; }
+    #div2 a p { margin: 0; color: white; transition: color 0.5s ease; }
+    #div2 p:hover { color: rgb(30, 179, 208); }
+
+    #projects {
+      row-gap: 66px; column-gap: 66px;
+      margin-top: 120px;
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      max-width: 1200px; justify-items: center; align-items: center;
+      margin-left: auto; margin-right: auto;
+    }
+
+    .project {
+      position: relative;
+      width: 100%; max-width: 609px; height: 485px;
+      overflow: hidden; border-radius: 4%;
+    }
+
+    .project-content {
+      position: absolute; inset: 0;
+      z-index: 1; padding: 20px; text-align: left;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      background-color: rgba(118, 135, 241, 0.5);
+      color: rgb(0, 0, 0);
+      box-sizing: border-box;
+    }
+
+    .project-image {
+      position: absolute; inset: 0;
+      z-index: 0; overflow: hidden;
+      opacity: 1; /* Visible par défaut (mobile / no-hover) */
+      transition: opacity 0.35s ease;
+    }
+
+    .project-image img { width: 100%; height: 100%; object-fit: cover; }
+
+    #page1 {
+      position: relative; display: flex; align-items: center; justify-content: center;
+      height: 100vh; text-align: center;
+    }
+
+    #text-container {
+      white-space: nowrap;
+      position: absolute; top: 50%; left: 20px; transform: translateY(-20%);
+      z-index: 1; text-align: left; padding-left: 20px; color: white; width: 40%;
+    }
+
+    #portfolio-image {
+      position: absolute; top: 0; right: 0;
+      width: 70%; height: 100%; object-fit: cover;
+      z-index: 0; opacity: 0.9;
+    }
+
+    #photoidentite { object-fit: contain; }
+
+    footer {
+      background-color: rgb(28, 37, 169);
+      font-size: 30px; font-weight: 500;
+      width: 100%;
+      padding: 10px 8px 10px 20px;
+      display: flex; flex-direction: column; justify-content: center;
+      color: white; font-family: Inter, sans-serif;
+      box-sizing: border-box; z-index: 2;
+    }
+
+    #about {
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; padding: 50px 0;
+    }
+
+    #about-container {
+      display: flex; flex-direction: row; width: 80%; max-width: 1200px; gap: 20px;
+    }
+
+    #about-image {
+      width: 40%; max-width: 400px; height: auto; object-fit: cover; flex-shrink: 0;
+    }
+
+    #about-text {
+      width: 60%; display: flex; flex-direction: column; justify-content: center;
+      color: white; font-size: 20px; font-weight: 400; line-height: 1.5;
+    }
+
+    #cv-section { display: flex; justify-content: flex-end; margin-top: -140px; }
+
+    #cv-button {
+      font-weight: 600; font-size: 64px;
+      background-color: rgb(30, 179, 208); color: black;
+      padding: 20px 30px; text-decoration: none; border-radius: 40px; margin-right: 50px;
+    }
+
+    .name-title { font-size: 96px; margin: 0 0 5px 0; }
+    .subtitle-job { font-size: 64px; margin: 0 0 10px 0; color: rgb(30, 179, 208); }
+    .skills-description { font-size: 36px; margin: 0; line-height: 1; }
+
+    /* Iframe d’aperçu (pour les cartes qui en ont une) */
+    .project-iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: block; border: 0;
+      opacity: 0; transition: opacity 0.35s ease;
+      pointer-events: none; /* clic = ouvre le lien parent */
+      z-index: 2; /* au-dessus de .project-content (z-index:1) */
+    }
+
+    /* Desktop : activer les effets hover */
+    @media (hover: hover) and (pointer: fine) {
+      /* Comportement par défaut : l’image apparaît au hover */
+      .project-image { opacity: 0; }
+      .project:hover .project-image { opacity: 1; }
+
+      /* Carte avec aperçu iframe au hover : inverser (image cachée, iframe visible) */
+      .invert-hover .project-image { opacity: 1; }
+      .invert-hover:hover .project-image { opacity: 0; }
+      .invert-hover:hover .project-iframe { opacity: 1; }
+    }
+
+    /* MOBILE tweaks + header empilé */
+    @media (max-width: 790px) {
+      
+
+      body { padding-top: 110px; }
+
+      header {
+        flex-wrap: nowrap; align-items: flex-start; padding: 2px 5px; height: 50px;
+      }
+
+      #logo { font-size: 48px; line-height: 1; margin: 0; }
+
+      #div2 {
+        margin: 0 15px 0 0; font-size: 18px; gap: 10px;
+        display: flex; flex-direction: row; align-items: center; transform: translateY(12px);
+      }
+
+      .name-title { font-size: 32px; }
+      .subtitle-job { font-size: 28px; }
+      .skills-description { font-size: 16px; }
+
+      #text-container { margin-top: -410px; }
+      #photoidentite { margin-top: -1150px; }
+      #about-text { font-size: 18px; margin-top: -20px; }
+
+      #projects {
+        margin-top: -400px; grid-template-columns: 1fr;
+        padding: 0 16px; justify-items: center;
+      }
+
+      .project { width: 100%; max-width: 420px; margin: 0 auto; height: 260px; }
+      #about-container { flex-direction: column; width: 100%; }
+      #about-image { width: 100%; max-width: 400px; }
+      #about-text { width: 100%; }
+
+      .project-stegano .project-content {
+        display: none !important;
+      }
+      .project-stegano .project-image img {
+        object-fit: cover;
+        object-position: center 10%; /* 50% = centre parfait | 60% = un peu plus bas */
+      }
+
+
+      #cv-button { font-size: 32px; padding: 15px 35px; margin-top: 20px; }
+      #portfolio-image { display: none; }
+    }
+
+    /* Curseur main sur cartes cliquables */
+    .project-link {
+      display: block; position: relative;
+      text-decoration: none; color: inherit; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Ancre pour le lien "Home" -->
+  <div id="top"></div>
+
+  <header>
+    <p id="logo">RR</p>
+    <div id="div2">
+      <a href="#top"><p id="Home">Home</p></a>
+      <a href="#about"><p id="about-link">About</p></a>
+      <a href="#projects"><p id="projects-link">Projects</p></a>
+      <a href="#footer"><p id="contact-link">Contact</p></a>
+    </div>
+  </header>
+
+  <main>
+    <div id="page1">
+      <div id="text-container">
+        <p class="name-title">Romain Roth</p>
+        <p class="subtitle-job">Data Analyst</p>
+        <p class="skills-description">
+          Data base (SQL & NoSQL) - Python - PHP<br>
+          HTML/CSS - JS Vanilla - ReactJS<br>
+          Datavis - Power BI - UX/UI Design - Excel
+        </p>
+      </div>
+      <img src="./images/imageportfolio.png" id="portfolio-image" alt="portfolio visuel">
+    </div>
+
+    <section id="about">
+      <div id="about-container">
+        <img src="./images/photoidentite.png" id="photoidentite" alt="photo d'identité">
+        <div id="about-text">
+          <ul>
+            <li>Je suis un développeur full-stack motivé par la mise en place de solutions informatiques rigoureuses.</li>
+            <li>Avec une formation comptable, j’ai intégré Cegid, éditeur de logiciels comptables, où j’ai développé un fort intérêt pour le software.</li>
+            <li>Ce que j’aime dans le codage : l’apprentissage constant, la résolution de problèmes et la création de solutions innovantes.</li>
+            <li>J’ai développé une affinité particulière pour le développement back-end et front-end, notamment autour de la Data et de l’IA.</li>
+            <li>Compétences : JavaScript, React, NodeJS, GitHub, HTML, CSS, SQL, PHP, Excel, Power BI, Matplotlib.</li>
+            <li>Je recherche un poste stimulant dans lequel je pourrai apporter toute mon énergie et mes compétences.</li>
+          </ul>
+
+          <p><strong>Si vous recherchez un assistant motivé et curieux,<br>LET’S CONNECT.</strong></p>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="projects">
+      <!-- Carte 1 : Game Quest -->
+      <div class="project">
+        <div class="project-content">
+          <h1>Game Quest</h1>
+          <h3>Un jeu 2D codé entièrement en Python avec une interface graphique utilisant Tiled pour les cartes.</h3>
+        </div>
+        <div class="project-image">
+          <img src="./images/gamequest1.png" alt="aperçu Game Quest">
+        </div>
+      </div>
+
+      <!-- Carte 2 : Markdown so année 2000 (image au survol + iframe en live) -->
+      <a
+        class="project project-markdown"
+        href="./Markdown2000/index.html"
+        target="_blank"
+        rel="noopener"
+      >
+        <div class="project-content">
+          <h1>Markdown so année 2000</h1>
+          <h3>
+            Un éditeur Markdown au style rétro années 2000, avec aperçu HTML en temps réel,
+            widgets amusants et stockage local. Réalisé en React + APIs publiques.
+          </h3>
+        </div>
+
+        <!-- Image affichée uniquement AU SURVOL -->
+        <div class="project-image">
+          <img src="./images/projetMarkdown.png" alt="aperçu Markdown 2000">
+        </div>
+      </a>
+
+
+      <!-- Script pour adapter le lien Markdown entre dev et prod -->
+      <script>
+        (function () {
+          const link = document.getElementById('link-markdown');
+          if (!link) return;
+
+          // Si on est en local (fichier ou serveur local), on utilise le dev server Vite
+          if (
+            location.protocol === 'file:' ||
+            location.hostname === 'localhost' ||
+            location.hostname === '127.0.0.1'
+          ) {
+            link.href = 'http://localhost:5173/';
+          } else {
+            // En prod : on reste sur le build statique
+            link.href = './Markdown2000/';
+          }
+        })();
+      </script>
+
+      <!-- Carte 3 : Stéganographie -->
+      <a
+        class="project project-stegano"
+        href="https://data2watermarking-g84ujxqu5zvacljqbqgrys.streamlit.app/"
+        target="_blank"
+        rel="noopener"
+      >
+        <div class="project-content">
+          <h1>Stéganographie LSB + Chiffrement César & Vigenère (Unicode 21 bits)</h1>
+          <h3>
+            Ce projet associe stéganographie LSB et chiffrement avancé (César et Vigenère Unicode 21 bits)
+            pour dissimuler un message dans une image sans altération visible. Le texte est chiffré,
+            converti en binaire haute précision puis inséré dans les bits de poids faible de chaque pixel.
+            Une interface Streamlit intuitive permet d’encoder et décoder en quelques clics, avec un support
+            complet Unicode — y compris les emojis.
+          </h3>
+        </div>
+
+        <div class="project-image">
+          <img src="./images/Watermarking_Cesar_Vigenere.png" alt="Watermarking Cesar Vigenere">
+        </div>
+      </a>
+
+
+      <!-- Carte 4 : Placeholder -->
+      <div class="project">
+        <div class="project-content">
+          <h1>Yours is next !</h1>
+          <h3>Great things ahead</h3>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div>
+      <p style="font-size: 24px; color: rgb(30, 179, 208); margin: 0;">Contact</p>
+      <a href="mailto:romain.roth@gmail.com" style="font-size: 24px; color: white; text-decoration: none;">romain.roth@gmail.com</a>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <a href="https://www.linkedin.com/in/romain-roth-dev" target="_blank" style="background-color: rgb(30, 179, 208); border-radius: 50%; padding: 6px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+          <img src="./images/icons8-linkedin-50.png" alt="LinkedIn" style="width: 55px; height: 55px; border-radius: 50%;">
+        </a>
+        <a href="https://github.com/RomainR99" target="_blank" style="background-color: rgb(30, 179, 208); border-radius: 50%; padding: 6px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+          <img src="./images/icons8-github-logo-50.png" alt="GitHub" style="width: 60px; height: 60px;">
+        </a>
+        <a href="./images/CV_2025_Data_Analyst_Romain_Roth.pdf" download
+           style="background-color: rgb(30, 179, 208); color: black; border-radius: 50%;
+                  width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+                  text-decoration: none; font-size: 25px; font-weight: bold;">
+          CV
+        </a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 55px; color: black;">2025</span>
+        <div style="width: 24px; height: 24px; background-color: rgb(30, 179, 208); color: black;
+                    border: 2px solid black; border-radius: 50%; display: flex; align-items: center;
+                    justify-content: center; font-weight: bold; font-size: 14px;">
+          C
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
