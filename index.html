@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TD796690FR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-TD796690FR');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RomainRoth</title>
@@ -41,6 +50,40 @@
       text-transform: uppercase;
       color: white;
       margin: 0;
+    }
+    .skill-pill::before {
+      content: attr(data-text);
+    }
+
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+      max-width: 480px;
+    }
+    .skill-pill:hover {
+      box-shadow: 0 0 16px rgba(255, 140, 0, 0.75);
+      transform: scale(1.05);
+      transition: 0.2s ease;
+    }
+
+    .skill-pill {
+      padding: 8px 16px;
+      border-radius: 999px;            /* forme pilule bien arrondie */
+      background: rgba(30, 179, 208, 0.12);
+      border: 2px solid rgb(191, 109, 9); 
+      box-shadow: 0 0 12px rgba(255, 140, 0, 0.45);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: #ffffff;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     #div2 {
@@ -91,7 +134,7 @@
 
     #text-container {
       white-space: nowrap;
-      position: absolute; top: 50%; left: 20px; transform: translateY(-20%);
+      position: absolute; top: 30%; left: 20px; transform: translateY(-20%);
       z-index: 1; text-align: left; padding-left: 20px; color: white; width: 40%;
     }
 
@@ -238,11 +281,18 @@
       <div id="text-container">
         <p class="name-title">Romain Roth</p>
         <p class="subtitle-job">Data Analyst</p>
-        <p class="skills-description">
-          Data base (SQL & NoSQL) - Python - PHP<br>
-          HTML/CSS - JS Vanilla - ReactJS<br>
-          Datavis - Power BI - UX/UI Design - Excel
-        </p>
+        <div class="skills-container">
+          <div class="skill-pill" data-text="Data base (SQL & NoSQL)"></div>
+          <div class="skill-pill" data-text="Python"></div>
+          <div class="skill-pill" data-text="PHP"></div>
+          <div class="skill-pill" data-text="HTML/CSS"></div>
+          <div class="skill-pill" data-text="JS Vanilla"></div>
+          <div class="skill-pill" data-text="ReactJS"></div>
+          <div class="skill-pill" data-text="Datavis"></div>
+          <div class="skill-pill" data-text="Power BI"></div>
+          <div class="skill-pill" data-text="UX/UI Design"></div>
+          <div class="skill-pill" data-text="Excel"></div>
+        </div>
       </div>
       <img src="./images/imageportfolio.png" id="portfolio-image" alt="portfolio visuel">
     </div>
@@ -328,13 +378,12 @@
         rel="noopener"
       >
         <div class="project-content">
-          <h1>Stéganographie LSB + Chiffrement César & Vigenère (Unicode 21 bits)</h1>
+          <h1>Stéganographie LSB + Chiffrement César & Vigenère</h1>
           <h3>
-            Ce projet associe stéganographie LSB et chiffrement avancé (César et Vigenère Unicode 21 bits)
-            pour dissimuler un message dans une image sans altération visible. Le texte est chiffré,
-            converti en binaire haute précision puis inséré dans les bits de poids faible de chaque pixel.
-            Une interface Streamlit intuitive permet d’encoder et décoder en quelques clics, avec un support
-            complet Unicode — y compris les emojis.
+            Ce projet associe stéganographie LSB et chiffrement avancé
+            pour dissimuler un message dans une image. Le texte est chiffré,
+            converti en binaire puis inséré dans les bits de chaque pixel.
+            Une interface Streamlit permet d’encoder et décoder en quelques clics.
           </h3>
         </div>
 
@@ -344,13 +393,22 @@
       </a>
 
 
-      <!-- Carte 4 : Placeholder -->
-      <div class="project">
+      <!-- Carte 4 : Murder City SQL -->
+      <a
+        class="project project-link"
+        href="https://github.com/RomainR99/Murder_City_SQL"
+        target="_blank"
+        rel="noopener"
+      >
         <div class="project-content">
-          <h1>Yours is next !</h1>
-          <h3>Great things ahead</h3>
+          <h1>Murder City SQL</h1>
+          <h3>
+            Enquête policière interactive : identification du meurtrier en interrogeant une base SQLite
+            à l'aide de requêtes SELECT, JOIN, GROUP BY et filtres WHERE. Croisement de multiples tables
+            (crime_scene_report, person, drivers_license, get_fit_now_member, interviews) pour résoudre le mystère.
+          </h3>
         </div>
-      </div>
+      </a>
     </section>
   </main>
 
